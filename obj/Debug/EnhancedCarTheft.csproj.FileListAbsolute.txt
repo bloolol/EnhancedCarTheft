@@ -1,0 +1,9 @@
+C:\Users\clope\OneDrive\Documents\GTA V Modding\repos\repos\GTAV_CorrectProjectType\EnhancedCarTheft\bin\Debug\EnhancedCarTheft.dll
+C:\Users\clope\OneDrive\Documents\GTA V Modding\repos\repos\GTAV_CorrectProjectType\EnhancedCarTheft\bin\Debug\EnhancedCarTheft.pdb
+C:\Users\clope\OneDrive\Documents\GTA V Modding\repos\repos\GTAV_CorrectProjectType\EnhancedCarTheft\bin\Debug\LemonUI.SHVDN3.dll
+C:\Users\clope\OneDrive\Documents\GTA V Modding\repos\repos\GTAV_CorrectProjectType\EnhancedCarTheft\bin\Debug\ScriptHookVDotNet3.dll
+C:\Users\clope\OneDrive\Documents\GTA V Modding\repos\repos\GTAV_CorrectProjectType\EnhancedCarTheft\obj\Debug\EnhancedCarTheft.csproj.AssemblyReference.cache
+C:\Users\clope\OneDrive\Documents\GTA V Modding\repos\repos\GTAV_CorrectProjectType\EnhancedCarTheft\obj\Debug\EnhancedCarTheft.csproj.CoreCompileInputs.cache
+C:\Users\clope\OneDrive\Documents\GTA V Modding\repos\repos\GTAV_CorrectProjectType\EnhancedCarTheft\obj\Debug\Enhanced.4815FDD2.Up2Date
+C:\Users\clope\OneDrive\Documents\GTA V Modding\repos\repos\GTAV_CorrectProjectType\EnhancedCarTheft\obj\Debug\EnhancedCarTheft.dll
+C:\Users\clope\OneDrive\Documents\GTA V Modding\repos\repos\GTAV_CorrectProjectType\EnhancedCarTheft\obj\Debug\EnhancedCarTheft.pdb

@@ -43,12 +43,63 @@ public class AmbientVehicleLocking : Script
         this.lastCleanupTime = Game.GameTime;
         this.CleanupLockedVehicles();
     }
+    public static bool IsCopCar(Vehicle vehicle)
+    {
+        if (vehicle == null || !vehicle.Exists()) return false;
 
+        return 
+               vehicle.Model.ToString().ToLower().Contains("police") ||
+               vehicle.Model.ToString().ToLower().Contains("sheriff") ||
+               vehicle.Model.ToString().ToLower().Contains("fbi") ||
+               vehicle.Model.ToString().ToLower().Contains("pranger") ||
+               vehicle.Model.ToString().ToLower().Contains("riot");
+    }
+
+    public static bool IsDoorOpen(Vehicle veh)
+    {
+        Ped player = Game.Player.Character;
+        if (veh != null &&
+               veh.Exists() &&
+               !veh.IsDead &&
+               veh.IsDriveable &&
+
+               !veh.Model.IsBike &&
+               !veh.Model.IsBoat &&
+               !veh.Model.IsQuadBike &&
+               !veh.Model.IsTrain)
+        {
+            // Get the seat the player is trying to enter
+            VehicleSeat targetSeat = player.SeatIndex;
+
+            // Map seat to door index
+            VehicleDoorIndex targetDoor = VehicleDoorIndex.FrontLeftDoor;
+            switch (targetSeat)
+            {
+                case VehicleSeat.RightFront:
+                    targetDoor = VehicleDoorIndex.FrontRightDoor;
+                    break;
+                case VehicleSeat.LeftRear:
+                    targetDoor = VehicleDoorIndex.BackLeftDoor;
+                    break;
+                case VehicleSeat.RightRear:
+                    targetDoor = VehicleDoorIndex.BackRightDoor;
+                    break;
+            }
+
+            // Skip if the target door is open
+            if (veh.Doors[targetDoor]?.IsOpen == true)
+                return true;
+
+        }
+        return false;
+
+
+    }
     private void LockNearbyAmbientVehicles()
     {
         foreach (Vehicle nearbyVehicle in World.GetNearbyVehicles(this.player.Position, 15f))
         {
-            if (nearbyVehicle.Exists() && !((Entity)nearbyVehicle == (Entity)this.player.CurrentVehicle) && !nearbyVehicle.IsPersistent && !nearbyVehicle.IsTrain && !nearbyVehicle.IsPlane && !this.lockedVehicles.Contains(nearbyVehicle) && !nearbyVehicle.PreviouslyOwnedByPlayer && !nearbyVehicle.IsStolen && (Entity)nearbyVehicle.Driver == (Entity)null)
+            if (nearbyVehicle.Exists() && !((Entity)nearbyVehicle == (Entity)this.player.CurrentVehicle) && !IsDoorOpen(nearbyVehicle)  && !nearbyVehicle.IsPersistent && !nearbyVehicle.IsTrain && !nearbyVehicle.IsPlane && !this.lockedVehicles.Contains(nearbyVehicle) && !nearbyVehicle.PreviouslyOwnedByPlayer && !nearbyVehicle.IsStolen && (Entity)nearbyVehicle.Driver == (Entity)null)
             {
                 nearbyVehicle.LockStatus = VehicleHelper.VehicleIsValidType(nearbyVehicle) ? (RandomHelper.random.Next(100) <= 97 ? VehicleLockStatus.CannotEnter : VehicleLockStatus.None) : VehicleLockStatus.CanBeBrokenInto;
                 nearbyVehicle.NeedsToBeHotwired = true;
