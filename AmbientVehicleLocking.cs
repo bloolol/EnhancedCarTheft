@@ -5,6 +5,7 @@
 // Assembly location: C:\Users\clope\OneDrive\Desktop\Enhanced Car Theft.dll
 
 using GTA;
+using GTA.Native;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -95,11 +96,50 @@ public class AmbientVehicleLocking : Script
 
 
     }
+
+
+    public static bool IsDoorOpenByAngle(Vehicle veh, float threshold = 0.0f)
+    {
+        if (veh == null || !veh.Exists() || veh.IsDead || !veh.IsDriveable)
+            return false;
+
+        Model model = veh.Model;
+        if (model.IsBike || model.IsBoat || model.IsQuadBike || model.IsTrain)
+            return false;
+
+        Ped player = Game.Player.Character;
+        VehicleSeat seat = player.SeatIndex;
+
+        VehicleDoorIndex door = VehicleDoorIndex.FrontLeftDoor;
+        switch (seat)
+        {
+            case VehicleSeat.RightFront:
+                door = VehicleDoorIndex.FrontRightDoor;
+                break;
+            case VehicleSeat.LeftRear:
+                door = VehicleDoorIndex.BackLeftDoor;
+                break;
+            case VehicleSeat.RightRear:
+                door = VehicleDoorIndex.BackRightDoor;
+                break;
+        }
+
+        float angleRatio = Function.Call<float>(
+            Hash.GET_VEHICLE_DOOR_ANGLE_RATIO,
+            veh,
+            (int)door
+        );
+
+        return angleRatio > threshold;
+    }
+
+
+
     private void LockNearbyAmbientVehicles()
     {
-        foreach (Vehicle nearbyVehicle in World.GetNearbyVehicles(this.player.Position, 15f))
+        foreach (Vehicle nearbyVehicle in World.GetNearbyVehicles(this.player.Position, 10f))
         {
-            if (nearbyVehicle.Exists() && !((Entity)nearbyVehicle == (Entity)this.player.CurrentVehicle) && !IsDoorOpen(nearbyVehicle)  && !nearbyVehicle.IsPersistent && !nearbyVehicle.IsTrain && !nearbyVehicle.IsPlane && !this.lockedVehicles.Contains(nearbyVehicle) && !nearbyVehicle.PreviouslyOwnedByPlayer && !nearbyVehicle.IsStolen && (Entity)nearbyVehicle.Driver == (Entity)null)
+            if (nearbyVehicle.Exists() && !((Entity)nearbyVehicle == (Entity)this.player.CurrentVehicle) && !IsDoorOpenByAngle(nearbyVehicle, 0) && !IsDoorOpen(nearbyVehicle)  && !nearbyVehicle.IsPersistent && !nearbyVehicle.IsTrain && !nearbyVehicle.IsPlane && !this.lockedVehicles.Contains(nearbyVehicle) && !nearbyVehicle.PreviouslyOwnedByPlayer && !nearbyVehicle.IsStolen && (Entity)nearbyVehicle.Driver == (Entity)null)
             {
                 nearbyVehicle.LockStatus = VehicleHelper.VehicleIsValidType(nearbyVehicle) ? (RandomHelper.random.Next(100) <= 97 ? VehicleLockStatus.CannotEnter : VehicleLockStatus.None) : VehicleLockStatus.CanBeBrokenInto;
                 nearbyVehicle.NeedsToBeHotwired = true;
