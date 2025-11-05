@@ -137,7 +137,7 @@ public class AmbientVehicleLocking : Script
 
     private void LockNearbyAmbientVehicles()
     {
-        foreach (Vehicle nearbyVehicle in World.GetNearbyVehicles(this.player.Position, 10f))
+        foreach (Vehicle nearbyVehicle in World.GetNearbyVehicles(this.player.Position, 8f))
         {
             if (nearbyVehicle.Exists() && !((Entity)nearbyVehicle == (Entity)this.player.CurrentVehicle) && !IsDoorOpenByAngle(nearbyVehicle, 0) && !IsDoorOpen(nearbyVehicle)  && !nearbyVehicle.IsPersistent && !nearbyVehicle.IsTrain && !nearbyVehicle.IsPlane && !this.lockedVehicles.Contains(nearbyVehicle) && !nearbyVehicle.PreviouslyOwnedByPlayer && !nearbyVehicle.IsStolen && (Entity)nearbyVehicle.Driver == (Entity)null)
             {
