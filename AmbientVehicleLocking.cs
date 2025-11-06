@@ -137,13 +137,24 @@ public class AmbientVehicleLocking : Script
 
     private void LockNearbyAmbientVehicles()
     {
-        foreach (Vehicle nearbyVehicle in World.GetNearbyVehicles(this.player.Position, 8f))
+        foreach (Vehicle nearbyVehicle in World.GetNearbyVehicles(this.player.Position, 5f))
         {
-            if (nearbyVehicle.Exists() && !((Entity)nearbyVehicle == (Entity)this.player.CurrentVehicle) && !IsDoorOpenByAngle(nearbyVehicle, 0) && !IsDoorOpen(nearbyVehicle)  && !nearbyVehicle.IsPersistent && !nearbyVehicle.IsTrain && !nearbyVehicle.IsPlane && !this.lockedVehicles.Contains(nearbyVehicle) && !nearbyVehicle.PreviouslyOwnedByPlayer && !nearbyVehicle.IsStolen && (Entity)nearbyVehicle.Driver == (Entity)null)
+            if (nearbyVehicle.Exists() && !((Entity)nearbyVehicle == (Entity)this.player.CurrentVehicle) && !nearbyVehicle.IsPersistent && !nearbyVehicle.IsTrain && !nearbyVehicle.IsPlane && !this.lockedVehicles.Contains(nearbyVehicle) && !nearbyVehicle.PreviouslyOwnedByPlayer && !nearbyVehicle.IsStolen && (Entity)nearbyVehicle.Driver == (Entity)null)
             {
-                nearbyVehicle.LockStatus = VehicleHelper.VehicleIsValidType(nearbyVehicle) ? (RandomHelper.random.Next(100) <= 97 ? VehicleLockStatus.CannotEnter : VehicleLockStatus.None) : VehicleLockStatus.CanBeBrokenInto;
-                nearbyVehicle.NeedsToBeHotwired = true;
-                this.lockedVehicles.Add(nearbyVehicle);
+                if (!IsDoorOpenByAngle(nearbyVehicle, 0) || !IsDoorOpen(nearbyVehicle))
+                {
+                    nearbyVehicle.LockStatus = VehicleHelper.VehicleIsValidType(nearbyVehicle) ? (RandomHelper.random.Next(100) <= 97 ? VehicleLockStatus.Locked : VehicleLockStatus.None) : VehicleLockStatus.CanBeBrokenInto;
+                    nearbyVehicle.NeedsToBeHotwired = true;
+                    this.lockedVehicles.Add(nearbyVehicle);
+                }
+                else if (IsDoorOpenByAngle(nearbyVehicle, 0))
+                {
+                    nearbyVehicle.LockStatus = VehicleLockStatus.None;
+                    //if (this.lockedVehicles.Contains(nearbyVehicle))
+                    //{
+                      //  this.lockedVehicles.Remove(nearbyVehicle);
+                    //}
+                }
             }
         }
     }

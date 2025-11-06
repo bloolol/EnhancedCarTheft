@@ -75,9 +75,9 @@ public class Lockpicking : Script
                     this.vehicle = this.player.VehicleTryingToEnter;
                 if ((Entity)this.vehicle != (Entity)null)
                 {
-                    if (Game.IsControlJustPressed(GTA.Control.MeleeAttackLight) && this.vehicle.Exists() && this.vehicle.LockStatus == VehicleLockStatus.CannotEnter)
+                    if (Game.IsControlJustPressed(GTA.Control.MeleeAttackLight) && this.vehicle.Exists() && this.vehicle.LockStatus == VehicleLockStatus.Locked)
                         this.vehicle.LockStatus = VehicleLockStatus.CanBeBrokenIntoPersist;
-                    if (Game.IsControlJustPressed(GTA.Control.Jump) && this.vehicle.Exists() && this.vehicle.LockStatus == VehicleLockStatus.CannotEnter)
+                    if (Game.IsControlJustPressed(GTA.Control.Jump) && this.vehicle.Exists() && this.vehicle.LockStatus == VehicleLockStatus.Locked)
                     {
                         this.lockpicking = true;
                         for (int index = 0; index < this.pinY.Length; ++index)
@@ -106,14 +106,14 @@ public class Lockpicking : Script
         {
             if (!EnhancedCarTheft.usingKeyboard)
             {
-                if (this.vehicle.LockStatus == VehicleLockStatus.CannotEnter && !this.lockpicking && Game.IsControlJustPressed(GTA.Control.Enter))
+                if (this.vehicle.LockStatus == VehicleLockStatus.Locked && !this.lockpicking && Game.IsControlJustPressed(GTA.Control.Enter))
                     GTA.UI.Screen.ShowHelpText("While attempting to enter, press ~INPUT_JUMP~ to lockpick or ~INPUT_MELEE_ATTACK_LIGHT~ to break in.", 3000);
                 if (this.lockpicking)
                     GTA.UI.Screen.ShowHelpTextThisFrame("Use ~INPUT_SCRIPT_LEFT_AXIS_Y~ to move the pin into the highlighted position. Once highlighted, press ~INPUT_SPRINT~ to pick pin into place.");
             }
             else
             {
-                if (this.vehicle.LockStatus == VehicleLockStatus.CannotEnter && !this.lockpicking && Game.IsControlJustPressed(GTA.Control.Enter))
+                if (this.vehicle.LockStatus == VehicleLockStatus.Locked && !this.lockpicking && Game.IsControlJustPressed(GTA.Control.Enter))
                     GTA.UI.Screen.ShowHelpText("While attempting to enter, press ~INPUT_ENTER~ to lockpick or ~INPUT_MELEE_ATTACK_LIGHT~ to break in.", 3000);
                 if (this.lockpicking)
                     GTA.UI.Screen.ShowHelpTextThisFrame(string.Format("Use ~h~{0}~h~ to move the pin into the highlighted position. Once highlighted, press ~h~{1}~h~ to pick pin into place.", (object)EnhancedCarTheft.moveLockPickKey, (object)EnhancedCarTheft.pickPinKey));
@@ -144,9 +144,9 @@ public class Lockpicking : Script
                 this.vehicle = this.player.VehicleTryingToEnter;
             if ((Entity)this.vehicle != (Entity)null && !AmbientVehicleLocking.IsDoorOpen(vehicle))
             {
-                if (e.KeyCode == Keys.R && this.vehicle.Exists() && this.vehicle.LockStatus == VehicleLockStatus.CannotEnter)
+                if (e.KeyCode == Keys.R && this.vehicle.Exists() && this.vehicle.LockStatus == VehicleLockStatus.Locked)
                     this.vehicle.LockStatus = VehicleLockStatus.CanBeBrokenIntoPersist;
-                if (e.KeyCode == Keys.F && this.vehicle.Exists() && this.vehicle.LockStatus == VehicleLockStatus.CannotEnter)
+                if (e.KeyCode == Keys.F && this.vehicle.Exists() && this.vehicle.LockStatus == VehicleLockStatus.Locked)
                 {
                     this.lockpicking = true;
                     for (int index = 0; index < this.pinY.Length; ++index)
